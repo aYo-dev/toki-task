@@ -8,8 +8,20 @@ import SelectButton from './SelectButton';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import moment, { Moment } from 'moment';
 import TextField from '@mui/material/TextField';
+import { dateFormat } from '../constants';
+import Paper from '@mui/material/Paper';
+import List from '@mui/material/List';
+import PriceListItem from './PriceListItem';
 
-const dateFormat = 'YYYY MM D';
+const dummyPriceList = [
+  { "timestamp": 1649732400, "price": 0.12, "currency": "BGN"},
+  { "timestamp": 1649736000, "price": 0.13, "currency": "BGN"}
+];
+
+const dummyUsageList = [
+  { "timestamp": 1649732400, "kwh": 0.5},
+  { "timestamp": 1649736000, "kwh": 0.6}
+];
 
 export default function DashboardForm() {
   const [metric, setMetric] = useState(DataCategories.usage);
@@ -25,7 +37,7 @@ export default function DashboardForm() {
   };
 
   return (
-    <Box sx={{ flexGrow: 1 }} padding={2}>
+    <Box sx={{ flexGrow: 1, maxWidth: 850}} padding={2}>
       <ControllersBox>
         <Box flexGrow={1}>
           <SelectButton
@@ -52,6 +64,11 @@ export default function DashboardForm() {
         </Box>
         <Button sx={{flexGrow: 1}} variant="contained" size="small">Show</Button>
       </ControllersBox>
+      <Paper sx={{marginTop: 4}}>
+        <List>
+          {dummyPriceList.map((el, index) => <PriceListItem priceData={el} hasDivider={index !== 0}/>)}
+        </List>
+      </Paper>
     </Box>
   );
 }
