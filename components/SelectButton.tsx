@@ -23,7 +23,7 @@ export default function SelectButton({options, onChange}: SelectProps) {
 
   return (
     <FormControl fullWidth>
-      <InputLabel id="toki-select-label">Age</InputLabel>
+      <InputLabel id="toki-select-label">Category</InputLabel>
       <Select
         labelId="toki-select-label"
         id="toki-select"
