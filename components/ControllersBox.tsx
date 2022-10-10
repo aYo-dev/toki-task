@@ -8,15 +8,14 @@ import { Stack } from '@mui/system';
 import SelectButton from './SelectButton';
 
 interface ControllersBoxProps {
-  options: string[];
-  handleSelectChange: (v: string) => void;
+  children: JSX.Element;
 }
 
-export default function ControllersBox({options, handleSelectChange}: ControllersBoxProps) {
+export default function ControllersBox(props: ControllersBoxProps) {
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <Stack>
-        <SelectButton options={options} onChange={handleSelectChange}/>
+      <Stack direction="row">
+        {props.children}
       </Stack>
     </Box>
   );

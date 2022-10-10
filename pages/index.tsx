@@ -1,5 +1,6 @@
 import type { NextPage } from 'next';
 import Head from 'next/head';
+import DashboardForm from '../components/DashboardForm';
 import Header from '../components/Header';
 
 import { getAccountInfo } from '../services/account.service';
@@ -15,6 +16,7 @@ const Home: NextPage = ({account}: any) => {
       </Head>
       <Header brand={account.name} />
       <h1>Hello {account.owner}!</h1>
+      <DashboardForm />
     </>
   );
 }
