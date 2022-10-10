@@ -8,13 +8,13 @@ import { Stack } from '@mui/system';
 import SelectButton from './SelectButton';
 
 interface ControllersBoxProps {
-  children: JSX.Element;
+  children: JSX.Element[];
 }
 
 export default function ControllersBox(props: ControllersBoxProps) {
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <Stack direction="row">
+      <Stack direction="row" spacing={2}>
         {props.children}
       </Stack>
     </Box>

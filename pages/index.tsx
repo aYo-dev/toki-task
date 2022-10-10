@@ -1,10 +1,11 @@
 import type { NextPage } from 'next';
 import Head from 'next/head';
-import DashboardForm from '../components/DashboardForm';
-import Header from '../components/Header';
+import {LocalizationProvider} from '@mui/x-date-pickers';
+import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
 
 import { getAccountInfo } from '../services/account.service';
-import styles from '../styles/Home.module.css';
+import DashboardForm from '../components/DashboardForm';
+import Header from '../components/Header';
 
 const Home: NextPage = ({account}: any) => {
   return (
@@ -16,7 +17,9 @@ const Home: NextPage = ({account}: any) => {
       </Head>
       <Header brand={account.name} />
       <h1>Hello {account.owner}!</h1>
-      <DashboardForm />
+      <LocalizationProvider dateAdapter={AdapterMoment}>
+        <DashboardForm />
+      </LocalizationProvider>
     </>
   );
 }

@@ -7,18 +7,19 @@ import {
   Select,
 } from '@mui/material';
 import { nanoid } from 'nanoid';
+import { DataCategories } from '../enums';
 
 interface SelectProps {
-  options: string[];
-  onChange: (v: string) => void;
+  options: DataCategories[];
+  onChange: (v: DataCategories) => void;
 }
 
 export default function SelectButton({options, onChange}: SelectProps) {
   const [value, setValue] = useState(options[0]);
 
   const handleChange = (event: SelectChangeEvent) => {
-    setValue(event.target.value)
-    onChange(event.target.value);
+    setValue(event.target.value as DataCategories);
+    onChange(event.target.value as DataCategories);
   };
 
   return (
