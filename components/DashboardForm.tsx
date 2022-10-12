@@ -9,9 +9,7 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import moment, { Moment } from 'moment';
 import TextField from '@mui/material/TextField';
 import { dateFormat } from '../constants';
-import Paper from '@mui/material/Paper';
-import List from '@mui/material/List';
-import PriceListItem from './PriceListItem';
+import DataList from './DataList';
 
 const dummyPriceList = [
   { "timestamp": 1649732400, "price": 0.12, "currency": "BGN"},
@@ -26,6 +24,14 @@ const dummyUsageList = [
 export default function DashboardForm() {
   const [metric, setMetric] = useState(DataCategories.usage);
   const [date, setDate] = useState<Moment | null>(moment);
+
+  const listItems = useMemo(() => {
+    if(metric === DataCategories.prices) {
+      return dummyPriceList;
+    }
+
+    return dummyUsageList;
+  }, [metric])
 
   useEffect(() => console.log(date?.format(dateFormat)), [date]);
 
@@ -64,11 +70,7 @@ export default function DashboardForm() {
         </Box>
         <Button sx={{flexGrow: 1}} variant="contained" size="small">Show</Button>
       </ControllersBox>
-      <Paper sx={{marginTop: 4}}>
-        <List>
-          {dummyPriceList.map((el, index) => <PriceListItem priceData={el} hasDivider={index !== 0}/>)}
-        </List>
-      </Paper>
+      <DataList category={metric} items={listItems}/>
     </Box>
   );
 }

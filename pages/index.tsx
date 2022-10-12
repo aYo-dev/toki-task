@@ -2,6 +2,7 @@ import type { NextPage } from 'next';
 import Head from 'next/head';
 import {LocalizationProvider} from '@mui/x-date-pickers';
 import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
+import Box from '@mui/material/Box';
 
 import { getAccountInfo } from '../services/account.service';
 import DashboardForm from '../components/DashboardForm';
@@ -16,9 +17,11 @@ const Home: NextPage = ({account}: any) => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Header brand={account.name} />
-      <h1>Hello {account.owner}!</h1>
       <LocalizationProvider dateAdapter={AdapterMoment}>
-        <DashboardForm />
+        <Box justifyContent='center'> 
+          <h1>Hello {account.owner}!</h1>
+          <DashboardForm />
+        </Box>
       </LocalizationProvider>
     </>
   );

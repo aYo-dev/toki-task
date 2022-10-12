@@ -4,10 +4,10 @@ import {
 } from '@mui/material';
 import moment from 'moment';
 import { dateFormat } from '../constants';
-import { PriceData } from '../interfaces';
+import { UsageData } from '../interfaces';
 
 interface SelectProps {
-  priceData: PriceData,
+  priceData: UsageData,
   hasDivider: boolean,
 }
 
@@ -19,7 +19,7 @@ export default function PriceListItem({priceData, hasDivider}: SelectProps) {
         <p>
           {moment.unix(priceData.timestamp).format(dateFormat)}
         </p>
-        <p>{priceData.price}{priceData.currency}</p>
+        <p>{priceData.kwh}kwh</p>
       </ListItem>
     </>
   );

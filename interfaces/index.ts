@@ -15,4 +15,15 @@ export interface Date {
   year: number;
   month: number;
   day: number;
-} 
+}
+
+export interface PriceData {
+  timestamp: number,
+  price: number,
+  currency: string,
+}
+
+export interface UsageData {
+  timestamp: number,
+  kwh: number,
+}
