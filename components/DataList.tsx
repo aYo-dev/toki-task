@@ -5,19 +5,18 @@ import { DataCategories } from '../enums';
 import { PriceData, UsageData } from '../interfaces';
 import PriceListItem from './PriceListItem';
 import UsageListItem from './UsageListItem';
-import {equals, isEmpty} from 'ramda';
+import { isEmpty } from 'ramda';
+import { isPricesCategory } from '../utils';
 
 interface ControllersBoxProps {
   items: PriceData[] | UsageData[];
   category: DataCategories;
 }
 
-const isPriceList = equals(DataCategories.prices);
-
 export default function DataList({items, category}: ControllersBoxProps) {
   const noItems = isEmpty(items);
   const listItems = React.useMemo(() => {
-    if(isPriceList(category)){
+    if(isPricesCategory(category)){
       return items.map((el, index) => 
         <PriceListItem priceData={el as PriceData} hasDivider={index !== 0}/>);
     }

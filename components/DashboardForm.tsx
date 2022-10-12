@@ -3,13 +3,14 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 
 import ControllersBox from './ControllersBox';
-import { DataCategories } from '../enums';
+import { DataCategories, UsageMetricPoints } from '../enums';
 import SelectButton from './SelectButton';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import moment, { Moment } from 'moment';
 import TextField from '@mui/material/TextField';
 import { dateFormat } from '../constants';
 import DataList from './DataList';
+import { isPricesCategory, isUsageCategory } from '../utils';
 
 const dummyPriceList = [
   { "timestamp": 1649732400, "price": 0.12, "currency": "BGN"},
@@ -22,16 +23,17 @@ const dummyUsageList = [
 ];
 
 export default function DashboardForm() {
-  const [metric, setMetric] = useState(DataCategories.usage);
+  const [category, setCategory] = useState(DataCategories.usage);
+  const [metricPoint, setMetricPoint] = useState(UsageMetricPoints.first);
   const [date, setDate] = useState<Moment | null>(moment);
 
   const listItems = useMemo(() => {
-    if(metric === DataCategories.prices) {
+    if(isPricesCategory(category)) {
       return dummyPriceList;
     }
 
     return dummyUsageList;
-  }, [metric])
+  }, [category])
 
   useEffect(() => console.log(date?.format(dateFormat)), [date]);
 
@@ -42,13 +44,18 @@ export default function DashboardForm() {
     return day === 0 || day === 6;
   };
 
+  const showMetricsSelect = useMemo(() => isUsageCategory(category), [category])
+
   return (
     <Box sx={{ flexGrow: 1, maxWidth: 850}} padding={2}>
       <ControllersBox>
         <Box flexGrow={1}>
           <SelectButton
             options={[DataCategories.usage, DataCategories.prices]}
-            onChange={setMetric} />
+            onChange={(v) => setCategory(v as DataCategories)}
+            label="Category"
+            defaultValue={category}
+          />
         </Box>
         <Box flexGrow={2}>
           <DatePicker
@@ -68,9 +75,21 @@ export default function DashboardForm() {
             }}
           />
         </Box>
+        {/* child element must be wrapped in fragment or any other element when is used in condition */}
+        <>
+        { showMetricsSelect && 
+          <Box flexGrow={1}>
+            <SelectButton
+              options={[UsageMetricPoints.first, UsageMetricPoints.second]}
+              onChange={(v) => setMetricPoint(v as UsageMetricPoints)}
+              label="Metric point"
+              defaultValue={metricPoint}
+            />
+          </Box>}
+        </>
         <Button sx={{flexGrow: 1}} variant="contained" size="small">Show</Button>
       </ControllersBox>
-      <DataList category={metric} items={listItems}/>
+      <DataList category={category} items={listItems}/>
     </Box>
   );
 }

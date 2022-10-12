@@ -1,5 +1,6 @@
 import {Storage} from '@google-cloud/storage';
-import { Date, MeteringPoints, UsageResponse } from '../interfaces';
+import { UsageMetricPoints } from '../enums';
+import { Date, UsageResponse } from '../interfaces';
 
 const bucketName = 'toki-take-home.appspot.com';
 const storage = new Storage({keyFilename: 'key.json'});
@@ -21,7 +22,7 @@ const getFilesSelfLink = (files: any[]) =>
 /**
  * return used electricity for a day in format related to meteringPoinId
  */
-export const getUsagePerDay = async (meteringPoinId: MeteringPoints, date: Date): Promise<UsageResponse[]> => {
+export const getUsagePerDay = async (meteringPoinId: UsageMetricPoints, date: Date): Promise<UsageResponse[]> => {
   const file = await db.file(`usage/${date.year}/${date.month}/${date.day}/${meteringPoinId}.jsonl`)
     .download();
   const bufferString = file[0].toString('utf8');

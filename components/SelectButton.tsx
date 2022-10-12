@@ -10,12 +10,14 @@ import { nanoid } from 'nanoid';
 import { DataCategories } from '../enums';
 
 interface SelectProps {
-  options: DataCategories[];
-  onChange: (v: DataCategories) => void;
+  options: string[];
+  onChange: (v: string) => void;
+  label: string;
+  defaultValue: string;
 }
 
-export default function SelectButton({options, onChange}: SelectProps) {
-  const [value, setValue] = useState(options[0]);
+export default function SelectButton({options, onChange, label, defaultValue}: SelectProps) {
+  const [value, setValue] = useState(defaultValue);
 
   const handleChange = (event: SelectChangeEvent) => {
     setValue(event.target.value as DataCategories);
@@ -24,7 +26,7 @@ export default function SelectButton({options, onChange}: SelectProps) {
 
   return (
     <FormControl fullWidth>
-      <InputLabel id="toki-select-label">Category</InputLabel>
+      <InputLabel id="toki-select-label">{label}</InputLabel>
       <Select
         labelId="toki-select-label"
         id="toki-select"
