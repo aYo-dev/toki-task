@@ -9,21 +9,13 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import moment, { Moment } from 'moment';
 import TextField from '@mui/material/TextField';
 import { dateFormat } from '../constants';
-import DataList from './DataList';
+import { DataList } from './DataList';
 import { isUsageCategory } from '../utils';
 import { useApi } from '../hooks/useApi';
 import {toLower} from 'ramda';
 import { DataCategory } from '../interfaces';
-
-const dummyPriceList = [
-  { "timestamp": 1649732400, "price": 0.12, "currency": "BGN"},
-  { "timestamp": 1649736000, "price": 0.13, "currency": "BGN"}
-];
-
-const dummyUsageList = [
-  { "timestamp": 1649732400, "kwh": 0.5},
-  { "timestamp": 1649736000, "kwh": 0.6}
-];
+import CircularProgress from '@mui/material/CircularProgress';
+import Fade from '@mui/material/Fade';
 
 export default function DashboardForm() {
   const [category, setCategory] = useState(DataCategories.usage);
@@ -35,9 +27,6 @@ export default function DashboardForm() {
     isError, // show message on error
     request,
   } = useApi((v) => setDataItems(v as DataCategory));
-
-  useEffect(() => console.log('data is --->>>', dataItems), [dataItems]);
-  useEffect(() => console.log(date), [date]);
 
   const showMetricsSelect = useMemo(() => isUsageCategory(category), [category])
 
@@ -102,7 +91,16 @@ export default function DashboardForm() {
           disabled={isLoading}
           onClick={getData}>Show</Button>
       </ControllersBox>
-      <DataList category={category} items={dataItems} />
+      <Fade in={isLoading}>
+        <Box textAlign="center" marginTop={2}>
+          <CircularProgress />
+        </Box>
+      </Fade>
+      <Fade in={!isLoading}>
+        <Box>
+          <DataList category={category} items={dataItems} />
+        </Box>
+      </Fade>
     </Box>
   );
 }
