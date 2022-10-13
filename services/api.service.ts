@@ -33,7 +33,6 @@ export const getUsagePerDay = async (meteringPointId: UsageMeteringPoints, date:
     const result = parseJSONL(bufferString) as UsageResponse[];
     return result;
   } catch(e: any) {
-    console.log('tuk3', e);
     // if file doesn't exist in the clould storage then we have to return empty array
     if (e?.code === 404) return [];
 
