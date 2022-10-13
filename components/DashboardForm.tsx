@@ -10,7 +10,10 @@ import moment, { Moment } from 'moment';
 import TextField from '@mui/material/TextField';
 import { dateFormat } from '../constants';
 import DataList from './DataList';
-import { isPricesCategory, isUsageCategory } from '../utils';
+import { isUsageCategory } from '../utils';
+import { useApi } from '../hooks/useApi';
+import {toLower} from 'ramda';
+import { DataCategory } from '../interfaces';
 
 const dummyPriceList = [
   { "timestamp": 1649732400, "price": 0.12, "currency": "BGN"},
@@ -25,26 +28,31 @@ const dummyUsageList = [
 export default function DashboardForm() {
   const [category, setCategory] = useState(DataCategories.usage);
   const [metricPoint, setMetricPoint] = useState(UsageMetricPoints.first);
-  const [date, setDate] = useState<Moment | null>(moment);
+  const [date, setDate] = useState<Moment | null>(null);
+  const [dataItems, setDataItems] = useState([] as DataCategory);
+  const {
+    isLoading,
+    isError, // show message on error
+    request,
+  } = useApi((v) => setDataItems(v as DataCategory));
 
-  const listItems = useMemo(() => {
-    if(isPricesCategory(category)) {
-      return dummyPriceList;
-    }
-
-    return dummyUsageList;
-  }, [category])
-
-  useEffect(() => console.log(date?.format(dateFormat)), [date]);
-
-  // when we don't have data for this date it should be disabled
-  const outOfrange = (date: Moment) => {
-    const day = date.day();
-  
-    return day === 0 || day === 6;
-  };
+  useEffect(() => console.log('data is --->>>', dataItems), [dataItems]);
+  useEffect(() => console.log(date), [date]);
 
   const showMetricsSelect = useMemo(() => isUsageCategory(category), [category])
+
+  const getData = () => request({
+    url: `/api/${toLower(category)}`,
+    method: 'post',
+    data: {
+      metricPointId: metricPoint,
+      date: {
+        year: date?.format('Y'),
+        month: date?.format('MM'),
+        day: date?.format('D'),
+      }
+    }
+  })
 
   return (
     <Box sx={{ flexGrow: 1, maxWidth: 850}} padding={2}>
@@ -61,10 +69,10 @@ export default function DashboardForm() {
           <DatePicker
             disableFuture
             value={date}
-            shouldDisableDate={outOfrange}
             openTo="year"
-            minDate={moment('20210401')}
-            maxDate={moment('20220401')}
+            inputFormat={dateFormat}
+            minDate={moment('20220401')}
+            maxDate={moment('20220430')}
             onChange={setDate}
             renderInput={(params) => <TextField {...params} sx={{width: '100%', minWidth: '190px'}} />}
             views={['year', 'month', 'day']}
@@ -87,9 +95,14 @@ export default function DashboardForm() {
             />
           </Box>}
         </>
-        <Button sx={{flexGrow: 1}} variant="contained" size="small">Show</Button>
+        <Button 
+          sx={{flexGrow: 1}}
+          variant="contained"
+          size="small"
+          disabled={isLoading}
+          onClick={getData}>Show</Button>
       </ControllersBox>
-      <DataList category={category} items={listItems}/>
+      <DataList category={category} items={dataItems} />
     </Box>
   );
 }
