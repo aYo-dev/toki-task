@@ -25,7 +25,7 @@ const NoData = () => (
 const getDailyAmount = (items: any[], key: string): number =>
   items.reduce((acc, item) => acc + item[key], 0);  
 
-export default function DataList({items, category}: ControllersBoxProps) {
+export const DataList = ({items, category}: ControllersBoxProps) => {
   const noItems = isEmpty(items);
   const listItems = useMemo(() => {
     if(isPricesCategory(category)){
@@ -60,4 +60,4 @@ export default function DataList({items, category}: ControllersBoxProps) {
       </List>
     </Paper>
   );
-}
+};
