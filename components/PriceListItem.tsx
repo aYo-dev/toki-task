@@ -3,7 +3,7 @@ import {
   Divider,
 } from '@mui/material';
 import moment from 'moment';
-import { dateFormat } from '../constants';
+import { dateFormatFull } from '../constants';
 import { PriceData } from '../interfaces';
 
 interface SelectProps {
@@ -17,7 +17,7 @@ export default function PriceListItem({priceData, hasDivider}: SelectProps) {
       {hasDivider && <Divider />}
       <ListItem sx={{justifyContent: 'space-between'}}>
         <p>
-          {moment.unix(priceData.timestamp).format(dateFormat)}
+          {moment.unix(priceData.timestamp).format(dateFormatFull)}
         </p>
         <p>{priceData.price}{priceData.currency}</p>
       </ListItem>
