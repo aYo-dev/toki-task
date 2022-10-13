@@ -11,6 +11,8 @@ export interface UsageResponse {
 
 export type MeteringPoints = '1234' | '5678';
 
+export type DataCategory = PriceData[] | UsageData[];
+
 export interface Date {
   year: number;
   month: number;
