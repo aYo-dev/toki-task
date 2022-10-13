@@ -1,3 +1,5 @@
+import { UsageMeteringPoints } from "../enums";
+
 export interface AccountInfo {
   name: string,
   owner: string,
@@ -13,10 +15,15 @@ export type MeteringPoints = '1234' | '5678';
 
 export type DataCategory = PriceData[] | UsageData[];
 
+export type RequestData = {
+  meteringPoinId?: UsageMeteringPoints,
+  date: Date
+}
+
 export interface Date {
-  year: number;
-  month: number;
-  day: number;
+  year: string;
+  month: string;
+  day: string;
 }
 
 export interface PriceData {

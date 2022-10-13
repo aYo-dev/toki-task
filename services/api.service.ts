@@ -1,5 +1,5 @@
 import {Storage} from '@google-cloud/storage';
-import { UsageMetricPoints } from '../enums';
+import { UsageMeteringPoints } from '../enums';
 import { Date, UsageResponse } from '../interfaces';
 
 const bucketName = 'toki-take-home.appspot.com';
@@ -22,10 +22,10 @@ const getFilesSelfLink = (files: any[]) =>
 /**
  * return used electricity for a day in format related to meteringPoinId
  */
-export const getUsagePerDay = async (metricPointId: UsageMetricPoints, date: Date): Promise<UsageResponse[]> => {
+export const getUsagePerDay = async (meteringPointId: UsageMeteringPoints, date: Date): Promise<UsageResponse[]> => {
   try {
     // first we download the file
-    const file = await db.file(`usage/${date.year}/${date.month}/${date.day}/${metricPointId}.jsonl`)
+    const file = await db.file(`usage/${date.year}/${date.month}/${date.day}/${meteringPointId}.jsonl`)
       .download();
     // then we convert it in buffer string
     const bufferString = file[0].toString('utf8');
@@ -33,6 +33,7 @@ export const getUsagePerDay = async (metricPointId: UsageMetricPoints, date: Dat
     const result = parseJSONL(bufferString) as UsageResponse[];
     return result;
   } catch(e: any) {
+    console.log('tuk3', e);
     // if file doesn't exist in the clould storage then we have to return empty array
     if (e?.code === 404) return [];
 

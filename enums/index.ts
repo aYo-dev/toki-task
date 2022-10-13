@@ -3,7 +3,7 @@ export enum DataCategories {
   prices = 'Prices',
 }
 
-export enum UsageMetricPoints {
+export enum UsageMeteringPoints {
   first = '1234',
   second = '5678',
 }

@@ -1,9 +1,9 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 
 import ControllersBox from './ControllersBox';
-import { DataCategories, UsageMetricPoints } from '../enums';
+import { DataCategories, UsageMeteringPoints } from '../enums';
 import SelectButton from './SelectButton';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import moment, { Moment } from 'moment';
@@ -13,35 +13,40 @@ import { DataList } from './DataList';
 import { isUsageCategory } from '../utils';
 import { useApi } from '../hooks/useApi';
 import {toLower} from 'ramda';
-import { DataCategory } from '../interfaces';
+import { DataCategory, RequestData } from '../interfaces';
 import CircularProgress from '@mui/material/CircularProgress';
 import Fade from '@mui/material/Fade';
+import { useDataCategory } from '../hooks/useDataCategory';
 
 export default function DashboardForm() {
-  const [category, setCategory] = useState(DataCategories.usage);
-  const [metricPoint, setMetricPoint] = useState(UsageMetricPoints.first);
+  const [meteringPoint, setMeteringPoint] = useState(UsageMeteringPoints.first);
   const [date, setDate] = useState<Moment | null>(null);
   const [dataItems, setDataItems] = useState([] as DataCategory);
+  const {category, setCategory, categoryDayFormat } = useDataCategory(DataCategories.usage);
   const {
     isLoading,
     isError, // show message on error
     request,
   } = useApi((v) => setDataItems(v as DataCategory));
 
-  const showMetricsSelect = useMemo(() => isUsageCategory(category), [category])
+  const showMetringPointSelect = useMemo(() => isUsageCategory(category), [category])
+
+  const getCategoryRequestData = (meteringPoinId: UsageMeteringPoints, date: Moment): RequestData => {
+    return {
+      meteringPoinId,
+      date: {
+        year: date?.format('Y') as string,
+        month: date?.format('MM') as string,
+        day: date?.format(categoryDayFormat) as string,
+      }
+    }
+  }
 
   const getData = () => request({
     url: `/api/${toLower(category)}`,
     method: 'post',
-    data: {
-      metricPointId: metricPoint,
-      date: {
-        year: date?.format('Y'),
-        month: date?.format('MM'),
-        day: date?.format('D'),
-      }
-    }
-  })
+    data: getCategoryRequestData(meteringPoint, date as Moment),
+  });
 
   return (
     <Box sx={{ flexGrow: 1, maxWidth: 850}} padding={2}>
@@ -74,13 +79,13 @@ export default function DashboardForm() {
         </Box>
         {/* child element must be wrapped in fragment or any other element when is used in condition */}
         <>
-        { showMetricsSelect && 
+        { showMetringPointSelect && 
           <Box flexGrow={1}>
             <SelectButton
-              options={[UsageMetricPoints.first, UsageMetricPoints.second]}
-              onChange={(v) => setMetricPoint(v as UsageMetricPoints)}
-              label="Metric point"
-              defaultValue={metricPoint}
+              options={[UsageMeteringPoints.first, UsageMeteringPoints.second]}
+              onChange={(v) => setMeteringPoint(v as UsageMeteringPoints)}
+              label="Metering point"
+              defaultValue={meteringPoint}
             />
           </Box>}
         </>
