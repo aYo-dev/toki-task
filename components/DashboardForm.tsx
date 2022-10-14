@@ -22,13 +22,14 @@ export default function DashboardForm() {
   const [meteringPoint, setMeteringPoint] = useState(UsageMeteringPoints.first);
   const [date, setDate] = useState<Moment | null>(null);
   const [dataItems, setDataItems] = useState([] as DataCategory);
-  const [isFormValid, setFormValid] = useState(false);
+  const [isFormInvalid, setFormInvalid] = useState(false);
 
   const {
     category,
     setCategory,
     categoryDayFormat,
     categoryAmountKey,
+    categoryStartingDate,
     validate,
   } = useDataCategory(DataCategories.usage);
 
@@ -55,9 +56,10 @@ export default function DashboardForm() {
     const requestData = getCategoryRequestData(meteringPoint, date as Moment);
 
     if(!validate(requestData)) {
-      return setFormValid(true);
+      return setFormInvalid(true);
     }
 
+    setFormInvalid(false);
     request({
       url: `/api/${toLower(category)}`,
       method: 'post',
@@ -65,13 +67,19 @@ export default function DashboardForm() {
     });
   }
 
+  const onCategoryChange = (v: string) => {
+    setDataItems([]);
+    setFormInvalid(false);
+    setCategory(v as DataCategories);
+  }
+
   return (
     <Box sx={{ flexGrow: 1, maxWidth: 850}} padding={2}>
-      <ControllersBox isInvalid={isFormValid}>
+      <ControllersBox isInvalid={isFormInvalid}>
         <Box flexGrow={1}>
           <SelectButton
             options={[DataCategories.usage, DataCategories.prices]}
-            onChange={(v) => setCategory(v as DataCategories)}
+            onChange={onCategoryChange}
             label="Category"
             defaultValue={category}
           />
@@ -82,7 +90,7 @@ export default function DashboardForm() {
             value={date}
             openTo="year"
             inputFormat={dateFormat}
-            minDate={moment('20220401')}
+            minDate={moment(categoryStartingDate)}
             maxDate={moment('20220430')}
             onChange={setDate}
             renderInput={(params) => <TextField {...params} sx={{width: '100%', minWidth: '190px'}} />}

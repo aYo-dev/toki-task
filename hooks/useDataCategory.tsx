@@ -1,4 +1,5 @@
 import { useMemo, useState } from "react";
+import { pricesStartingDate, usageStartingDate } from "../constants";
 import { DataCategories } from "../enums";
 import {
   isPricesCategory,
@@ -17,18 +18,21 @@ export const useDataCategory = (defaultCategory: DataCategories) => {
   const [category, setCategory] = useState(defaultCategory);
 
   // with this method we handle the differences which each category has
-  // 1. diffrent category expect date format to be different
-  // 2. we need a different key to calculate total amount of data category item per day
-  // 3. each category data required different validation
+  // 1. categoryDayFormat - diffrent category expect date format to be different
+  // 2. categoryAmountKey - we need a different key to calculate total amount of data category item per day
+  // 3. categoryStartingDate - the category data provided for the task is in different time range so we need to handle this too
+  // 4. validate - each category data required different validation
   const {
     categoryDayFormat,
     categoryAmountKey,
+    categoryStartingDate,
     validate,
   } = useMemo(() => {
     if(isPricesCategory(category)) {
       return {
         categoryDayFormat: 'DD',
         categoryAmountKey: 'price',
+        categoryStartingDate: pricesStartingDate,
         validate: pricesRequstValidator,
       }
     }
@@ -36,15 +40,17 @@ export const useDataCategory = (defaultCategory: DataCategories) => {
     return {
       categoryDayFormat: 'D',
       categoryAmountKey: 'kwh',
+      categoryStartingDate: usageStartingDate,
       validate: usageRequstValidator,
     }
   }, [category]);
 
   return { 
     category,
+    validate,
     setCategory,
     categoryDayFormat,
     categoryAmountKey,
-    validate,
+    categoryStartingDate,
   };
 };
