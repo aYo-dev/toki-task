@@ -7,6 +7,7 @@ import Box from '@mui/material/Box';
 import { getAccountInfo } from '../services/account.service';
 import DashboardForm from '../components/DashboardForm';
 import Header from '../components/Header';
+import { Typography } from '@mui/material';
 
 const Home: NextPage = ({account}: any) => {
   return (
@@ -18,8 +19,14 @@ const Home: NextPage = ({account}: any) => {
       </Head>
       <Header brand={account.name} />
       <LocalizationProvider dateAdapter={AdapterMoment}>
-        <Box justifyContent='center'> 
-          <h1>Hello {account.owner}!</h1>
+        <Typography
+          variant="h4"
+          component="h1"
+          textAlign="center"
+          paddingTop={2}>
+          Hello {account.owner}!
+        </Typography>
+        <Box display="flex" justifyContent="center"> 
           <DashboardForm />
         </Box>
       </LocalizationProvider>

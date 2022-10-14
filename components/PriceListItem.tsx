@@ -17,9 +17,9 @@ export default function PriceListItem({priceData, hasDivider}: SelectProps) {
       {hasDivider && <Divider />}
       <ListItem sx={{justifyContent: 'space-between'}}>
         <p>
-          {moment.unix(priceData.timestamp).format(dateFormatFull)}
+          {moment(priceData.timestamp).format(dateFormatFull)}
         </p>
-        <p>{priceData.price}{priceData.currency}</p>
+        <p>{priceData.price} {priceData.currency}</p>
       </ListItem>
     </>
   );

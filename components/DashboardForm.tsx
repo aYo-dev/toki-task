@@ -22,7 +22,16 @@ export default function DashboardForm() {
   const [meteringPoint, setMeteringPoint] = useState(UsageMeteringPoints.first);
   const [date, setDate] = useState<Moment | null>(null);
   const [dataItems, setDataItems] = useState([] as DataCategory);
-  const {category, setCategory, categoryDayFormat } = useDataCategory(DataCategories.usage);
+  const [isFormValid, setFormValid] = useState(false);
+
+  const {
+    category,
+    setCategory,
+    categoryDayFormat,
+    categoryAmountKey,
+    validate,
+  } = useDataCategory(DataCategories.usage);
+
   const {
     isLoading,
     isError, // show message on error
@@ -42,15 +51,23 @@ export default function DashboardForm() {
     }
   }
 
-  const getData = () => request({
-    url: `/api/${toLower(category)}`,
-    method: 'post',
-    data: getCategoryRequestData(meteringPoint, date as Moment),
-  });
+  const getData = () => {
+    const requestData = getCategoryRequestData(meteringPoint, date as Moment);
+
+    if(!validate(requestData)) {
+      return setFormValid(true);
+    }
+
+    request({
+      url: `/api/${toLower(category)}`,
+      method: 'post',
+      data: requestData,
+    });
+  }
 
   return (
     <Box sx={{ flexGrow: 1, maxWidth: 850}} padding={2}>
-      <ControllersBox>
+      <ControllersBox isInvalid={isFormValid}>
         <Box flexGrow={1}>
           <SelectButton
             options={[DataCategories.usage, DataCategories.prices]}
@@ -96,14 +113,14 @@ export default function DashboardForm() {
           disabled={isLoading}
           onClick={getData}>Show</Button>
       </ControllersBox>
-      <Fade in={isLoading}>
+      {isLoading && <Fade in={isLoading}>
         <Box textAlign="center" marginTop={2}>
           <CircularProgress />
         </Box>
-      </Fade>
+      </Fade>}
       <Fade in={!isLoading}>
         <Box>
-          <DataList category={category} items={dataItems} />
+          <DataList categoryAmountKey={categoryAmountKey} category={category} items={dataItems} />
         </Box>
       </Fade>
     </Box>

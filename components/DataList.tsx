@@ -13,11 +13,12 @@ import { nanoid } from 'nanoid';
 interface ControllersBoxProps {
   items: DataCategory;
   category: DataCategories;
+  categoryAmountKey: string;
 }
 
 const NoData = () => (
   <Alert variant="outlined" severity="info">
-    Data is missing for this day.
+    No data for this day. Please choose another day from our calendar.
   </Alert>
 );
 
@@ -25,7 +26,7 @@ const NoData = () => (
 const getDailyAmount = (items: any[], key: string): number =>
   items.reduce((acc, item) => acc + item[key], 0);  
 
-export const DataList = ({items, category}: ControllersBoxProps) => {
+export const DataList = ({items, category, categoryAmountKey}: ControllersBoxProps) => {
   const noItems = isEmpty(items);
   const listItems = useMemo(() => {
     if(isPricesCategory(category)){
@@ -38,22 +39,24 @@ export const DataList = ({items, category}: ControllersBoxProps) => {
   }, [category, items]);
 
   const dailyAmount = useMemo(() => {
-    const result = getDailyAmount(items, 'kwh');
+    const result = getDailyAmount(items, categoryAmountKey);
     // we don't want very long float number
     return result.toFixed(3);
   }, [items])
 
   return (
     <Paper sx={{marginTop: 4, padding: 2}}>
-      <Typography 
-        paddingRight={2}
-        paddingTop={2}
-        fontWeight='bold'
-        textAlign='right'
-        borderBottom="1px solid"
-      >
-          Total amount: {dailyAmount}
-      </Typography>
+      {!noItems &&
+        <Typography 
+          paddingRight={2}
+          paddingTop={2}
+          fontWeight='bold'
+          textAlign='right'
+          borderBottom="1px solid"
+        >
+            Total amount: {dailyAmount}
+        </Typography>
+      } 
       <List>
         {!noItems && listItems}
         {noItems && <NoData />}
