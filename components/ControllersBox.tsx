@@ -15,7 +15,7 @@ export default function ControllersBox(props: ControllersBoxProps) {
         {props.children}
       </Stack>
       <Box marginTop={2}>
-        {props.isInvalid && <Alert color='error'>All fields are required, please fill them and try again</Alert>}
+        {props.isInvalid && <Alert color='error'>There is something wrong with your data, please check the fields and try again</Alert>}
       </Box>
     </Box>
   );
