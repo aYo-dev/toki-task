@@ -56,7 +56,7 @@ export const getPricesPerDay = async (meteringPointId: UsageMeteringPoints, date
     throw e;
   }
 };
-
+// dev purposes
 export const getAllFiles = async () => {
   try {
     const [files] = await storage.bucket(bucketName).getFiles();

@@ -21,7 +21,7 @@ import { useDataCategory } from '../hooks/useDataCategory';
 export default function DashboardForm() {
   const [meteringPoint, setMeteringPoint] = useState(UsageMeteringPoints.first);
   const [date, setDate] = useState<Moment | null>(null);
-  const [dataItems, setDataItems] = useState([] as DataCategory);
+  const [dataItems, setDataItems] = useState([] as DataCategory[]);
   const [isFormInvalid, setFormInvalid] = useState(false);
 
   const {
@@ -37,7 +37,7 @@ export default function DashboardForm() {
     isLoading,
     isError, // show message on error
     request,
-  } = useApi((v) => setDataItems(v as DataCategory));
+  } = useApi((v) => setDataItems(v as DataCategory[]));
 
   const showMetringPointSelect = useMemo(() => isUsageCategory(category), [category])
 

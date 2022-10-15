@@ -19,3 +19,7 @@ export const usageRequstValidator = (body: RequestData) =>
     && pathOr(false, ['date', 'year'], body)
     && pathOr(false, ['date', 'month'], body)
     && pathOr(false, ['date', 'day'], body);
+
+// items should have strict type
+export const getTotalAmount = (items: any[], key: string): number =>
+  items.reduce((acc, item) => acc + item[key], 0); 

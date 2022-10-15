@@ -6,12 +6,12 @@ import { DataCategory, PriceData, UsageData } from '../interfaces';
 import PriceListItem from './PriceListItem';
 import UsageListItem from './UsageListItem';
 import { isEmpty } from 'ramda';
-import { isPricesCategory } from '../utils';
+import { getTotalAmount, isPricesCategory } from '../utils';
 import { nanoid } from 'nanoid';
 
 
 interface ControllersBoxProps {
-  items: DataCategory;
+  items: DataCategory[];
   category: DataCategories;
   categoryAmountKey: string;
 }
@@ -20,11 +20,7 @@ const NoData = () => (
   <Alert variant="outlined" severity="info">
     No data for this day. Please choose another day from our calendar.
   </Alert>
-);
-
-// items should have strict type
-const getDailyAmount = (items: any[], key: string): number =>
-  items.reduce((acc, item) => acc + item[key], 0);  
+); 
 
 export const DataList = ({items, category, categoryAmountKey}: ControllersBoxProps) => {
   const noItems = isEmpty(items);
@@ -39,9 +35,9 @@ export const DataList = ({items, category, categoryAmountKey}: ControllersBoxPro
   }, [category, items]);
 
   const dailyAmount = useMemo(() => {
-    const result = getDailyAmount(items, categoryAmountKey);
+    const result = getTotalAmount(items, categoryAmountKey);
     // we don't want very long float number
-    return result.toFixed(3);
+    return result.toFixed(2);
   }, [items])
 
   return (

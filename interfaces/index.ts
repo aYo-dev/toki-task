@@ -13,7 +13,7 @@ export interface UsageResponse {
 
 export type MeteringPoints = '1234' | '5678';
 
-export type DataCategory = PriceData[] | UsageData[];
+export type DataCategory = PriceData | UsageData;
 
 export type RequestData = {
   meteringPoinId?: UsageMeteringPoints,
