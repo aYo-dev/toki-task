@@ -1,34 +1,35 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Bike API
+
+Toki web app is Node.js, Typescript web application.
+
+## Tech Stack 
+
+* [Next.js][next.js], [Typescript][typescript], [Doker][docker], [Jest][jest], [Github Actions][github-actions] - core platform and dev tools
+
+## Prerequisites
+
+* [Docker][docker] Community Edition v20 or higher
 
 ## Getting Started
 
-First, run the development server:
+Clone the repository
 
-```bash
-npm run dev
-# or
-yarn dev
+```
+git@github.com:aYo-dev/toki-task.git
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Build and run the project
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+```
+docker-compose up
+```
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+To reach out the API navigate to `http://127.0.0.1:3000`
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
 
-## Learn More
+[next.js]: https://nextjs.org
+[typescript]: https://github.com/kriasoft/react-starter-kit
+[docker]: https://www.docker.com/community-edition
+[jest]: https://jestjs.io,
+[github-actions]: https://github.com/features/actions
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
