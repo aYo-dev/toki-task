@@ -38,7 +38,7 @@ export const DataList = ({items, category, categoryAmountKey}: ControllersBoxPro
     const result = getTotalAmount(items, categoryAmountKey);
     // we don't want very long float number
     return result.toFixed(2);
-  }, [items])
+  }, [items, categoryAmountKey])
 
   return (
     <Paper sx={{marginTop: 4, padding: 2}}>
