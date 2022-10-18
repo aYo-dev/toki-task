@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import React, { useMemo } from 'react';
 import Paper from '@mui/material/Paper';
 import { Alert, List, Typography } from '@mui/material';
 import { DataCategories } from '../enums';
@@ -16,11 +16,11 @@ interface ControllersBoxProps {
   categoryAmountKey: string;
 }
 
-const NoData = () => (
+const NoData = React.memo(() => (
   <Alert variant="outlined" severity="info">
     No data for this day. Please choose another day from our calendar.
   </Alert>
-); 
+)); 
 
 export const DataList = ({items, category, categoryAmountKey}: ControllersBoxProps) => {
   const noItems = isEmpty(items);
