@@ -52,7 +52,7 @@ export default function DashboardForm() {
     }
   }
 
-  const getData = () => {
+  const onSubmit = () => {
     const requestData = getCategoryRequestData(meteringPoint, date as Moment);
 
     if(!validate(requestData)) {
@@ -119,7 +119,7 @@ export default function DashboardForm() {
           variant="contained"
           size="small"
           disabled={isLoading}
-          onClick={getData}>Show</Button>
+          onClick={onSubmit}>Show</Button>
       </ControllersBox>
       {isLoading && <Fade in={isLoading}>
         <Box textAlign="center" marginTop={2}>
