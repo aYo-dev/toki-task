@@ -1,6 +1,6 @@
 import { equals, pathOr } from 'ramda';
 import { DataCategories } from '../enums';
-import { RequestData } from '../interfaces';
+import { DataCategory, RequestData } from '../interfaces';
 
 export const isPricesCategory = equals(DataCategories.prices);
 export const isUsageCategory = equals(DataCategories.usage);
@@ -20,6 +20,5 @@ export const usageRequstValidator = (body: RequestData) =>
     && pathOr(false, ['date', 'month'], body)
     && pathOr(false, ['date', 'day'], body);
 
-// items should have strict type
-export const getTotalAmount = (items: any[], key: string): number =>
-  items.reduce((acc, item) => acc + item[key], 0); 
+export const getTotalAmount = (items: DataCategory[], key: string): number =>
+  items.reduce((acc, item) => acc + (item[key as keyof DataCategory]), 0); 
