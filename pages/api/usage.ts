@@ -1,12 +1,12 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { getUsagePerDay } from '../../services/api.service';
 import { isEmpty } from 'ramda';
-import { UsageResponse } from '../../interfaces';
+import { UsageData } from '../../interfaces';
 import { usageRequstValidator } from '../../utils';
 
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse< UsageResponse[]>
+  res: NextApiResponse<UsageData[] | []>
 ) {
   const { method } = req;
   const { body } = req;
@@ -18,7 +18,7 @@ export default async function handler(
   try {
     const usage = await getUsagePerDay(body.meteringPoinId, body.date);
 
-    res.status(200).json(usage);
+    res.status(200).json(usage) ;
   } catch(e) {
 
     res.status(500).json([]);

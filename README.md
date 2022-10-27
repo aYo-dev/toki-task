@@ -1,4 +1,4 @@
-# Bike API
+# Toki app
 
 Toki web app is Node.js, Typescript web application.
 
