@@ -4,13 +4,12 @@ import axios, { AxiosRequestConfig } from 'axios';
 
 /**
  * useApi is hook for fetching data via http request 
- * @param setData - in this task we use useApi to handle only 2 types of data
- * and we can use strict type for the setData parameter
- * but in real scenario the generic type is required
+ * @param responseDataDefaultValue - Initial state of the response data
  * @returns 
  */
-export const useApi = (setData: <T>(v: T) => void) => {
+export const useApi = <T,>(responseDataDefaultValue: T) => {
   const [requestData, setRequestData] = useState({});
+  const [responseData, setResponseData] = useState(responseDataDefaultValue);
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
 
@@ -24,7 +23,7 @@ export const useApi = (setData: <T>(v: T) => void) => {
 
     try {
       const result = await axios(requestData);
-      setData(result.data);
+      setResponseData(result.data);
     } catch (error) {
       setIsError(true);
     }
@@ -38,5 +37,5 @@ export const useApi = (setData: <T>(v: T) => void) => {
     }
   }, [requestData]);
 
-  return { isLoading, isError, request };
+  return { isLoading, isError, request, responseData };
 };

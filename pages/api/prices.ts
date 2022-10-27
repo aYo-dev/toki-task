@@ -1,12 +1,12 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { getPricesPerDay } from '../../services/api.service';
 import { isEmpty } from 'ramda';
-import { UsageResponse } from '../../interfaces';
+import { PriceData } from '../../interfaces';
 import { pricesRequstValidator } from '../../utils';
 
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse< UsageResponse[]>
+  res: NextApiResponse< PriceData[] | []>
 ) {
   const { method } = req;
   const { body } = req;

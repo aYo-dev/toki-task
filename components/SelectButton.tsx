@@ -9,19 +9,19 @@ import {
 import { nanoid } from 'nanoid';
 import { DataCategories } from '../enums';
 
-interface SelectProps {
+interface SelectProps<T> {
   options: string[];
-  onChange: (v: string) => void;
+  onChange: (v: T) => void;
   label: string;
-  defaultValue: string;
+  defaultValue: T;
 }
 
-export default function SelectButton({options, onChange, label, defaultValue}: SelectProps) {
+export default function SelectButton<A>({options, onChange, label, defaultValue}: SelectProps<string>) {
   const [value, setValue] = useState(defaultValue);
 
   const handleChange = (event: SelectChangeEvent) => {
-    setValue(event.target.value as DataCategories);
-    onChange(event.target.value as DataCategories);
+    setValue(event.target.value);
+    onChange(event.target.value);
   };
 
   return (

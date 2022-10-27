@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 
@@ -12,7 +12,7 @@ import { dateFormat } from '../constants';
 import { DataList } from './DataList';
 import { isUsageCategory } from '../utils';
 import { useApi } from '../hooks/useApi';
-import {toLower} from 'ramda';
+import {T, toLower} from 'ramda';
 import { DataCategory, RequestData } from '../interfaces';
 import CircularProgress from '@mui/material/CircularProgress';
 import Fade from '@mui/material/Fade';
@@ -21,7 +21,7 @@ import { useDataCategory } from '../hooks/useDataCategory';
 export default function DashboardForm() {
   const [meteringPoint, setMeteringPoint] = useState(UsageMeteringPoints.first);
   const [date, setDate] = useState<Moment | null>(null);
-  const [dataItems, setDataItems] = useState([] as DataCategory[]);
+  const [dataItems, setDataItems] = useState<DataCategory[] | []>([]);
   const [isFormInvalid, setFormInvalid] = useState(false);
 
   const {
@@ -37,7 +37,12 @@ export default function DashboardForm() {
     isLoading,
     isError, // show message on error
     request,
-  } = useApi((v) => setDataItems(v as DataCategory[]));
+    responseData,
+  } = useApi([]);
+
+  useEffect(() => {
+    setDataItems(responseData);
+  }, [responseData])
 
   const showMetringPointSelect = useMemo(() => isUsageCategory(category), [category])
 
@@ -45,15 +50,17 @@ export default function DashboardForm() {
     return {
       meteringPoinId,
       date: {
-        year: date?.format('Y') as string,
-        month: date?.format('MM') as string,
-        day: date?.format(categoryDayFormat) as string,
+        year: date?.format('Y'),
+        month: date?.format('MM'),
+        day: date?.format(categoryDayFormat),
       }
     }
   }
 
   const onSubmit = () => {
-    const requestData = getCategoryRequestData(meteringPoint, date as Moment);
+    if(!date) return;
+
+    const requestData = getCategoryRequestData(meteringPoint, date);
 
     if(!validate(requestData)) {
       return setFormInvalid(true);
